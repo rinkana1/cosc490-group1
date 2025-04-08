@@ -7,7 +7,7 @@ import os
 def upload_audio(request):
     if request.method == 'POST' and request.FILES.get('audio'):
         audio_file = request.FILES['audio']
-        fs = FileSystemStorage
+        fs = FileSystemStorage()
         filename = fs.save(audio_file.name, audio_file)
         uploaded_file_url = fs.url(filename)
 
