@@ -8,9 +8,9 @@ def speech_to_text_whisper(audio_file):
     return result["text"]
 
 # Example usage
-audio_path = "dia1_utt0.wav"  # Replace with your actual file
-transcribed_text = speech_to_text_whisper(audio_path)
-print("Transcribed Text:", transcribed_text)
+# audio_path = "dia1_utt0.wav"  # Replace with your actual file
+# transcribed_text = speech_to_text_whisper(audio_path)
+# print("Transcribed Text:", transcribed_text)
 
 
 # Load the emotion detection model
@@ -32,9 +32,9 @@ def detect_emotion(text):
     return top_emotion, probabilities.numpy().tolist()[0]
 
 # Run emotion detection on the transcribed text
-if transcribed_text.strip():
-    emotion, scores = detect_emotion(transcribed_text)
-    print(f"Detected Emotion: {emotion}")
-    print(f"Emotion Scores: {dict(zip(emotion_labels, scores))}")
-else:
-    print("Could not analyze emotion due to transcription error.")
+# if transcribed_text.strip():
+#     emotion, scores = detect_emotion(transcribed_text)
+#     print(f"Detected Emotion: {emotion}")
+#     print(f"Emotion Scores: {dict(zip(emotion_labels, scores))}")
+# else:
+#     print("Could not analyze emotion due to transcription error.")

@@ -34,8 +34,8 @@ function startDjangoServer() {
     });
 }
 
-app.whenReady().then(() => {
-    startDjangoServer();
+app.whenReady().then(async () => {
+    await startDjangoServer();
     setTimeout(createWindow, 3000);
 });
 
