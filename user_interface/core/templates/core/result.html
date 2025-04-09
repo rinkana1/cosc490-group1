@@ -4,12 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
+    <style>
+        :root {
+            --sadness: {{ sadness }}vw;
+            --joy: {{ joy }}vw;
+            --love: {{ love }}vw;
+            --anger: {{ anger }}vw;
+            --fear: {{ fear }}vw;
+            --surprise: {{ surprise }}vw;
+        }
+
+        body {
+            background-color: #1E1E1E;
+            color: #FFF;
+            font-family: 'Open Sans', 'Arial', sans-serif;
+            margin: 10vw;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        
+        .percentage-bar {
+            position: absolute;
+            display: block;
+            height: 8vw;
+            width: 0vw;
+        }
+
+        #sadness {
+            top: 35vh;
+            background-color: blue;
+            width: var(--sadness);
+        }
+
+        #joy {
+            top: 43vh;
+            background-color: yellow;
+            width: var(--joy);
+        }
+
+        #love {
+            top: 51vh;
+            background-color: pink;
+            width: var(--love);
+        }
+
+        #anger {
+            top: 59vh;
+            background-color: red;
+            width: var(--anger);
+        }
+
+        #fear {
+            top: 67vh;
+            background-color: purple;
+            width: var(--fear);
+        }
+
+        #surprise {
+            top: 75vh;
+            background-color: green;
+            width: var(--surprise);
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Emotion Detected {{ emotion }}</h1>
-    <p>Transcribed Text: {{ transcribed_text }}</p>
-    <p>Scores: {{ scores }}</p>
-    <p>Audio File: {{ filename }}</p>
+    <h1>Emotion Detected: {{ emotion }}</h1>
+    <label for="p.transcription">Transcribed Text:</label>
+    <p id="transcription">{{ transcribed_text }}</p>
+    <div class="percentage-bar" id="sadness">Sadness: {{ sadness }}%</div>
+    <div class="percentage-bar" id="joy">Joy: {{ joy }}%</div>
+    <div class="percentage-bar" id="love">Love: {{ love }}%</div>
+    <div class="percentage-bar" id="anger">Anger: {{ anger }}%</div>
+    <div class="percentage-bar" id="fear">Fear: {{ fear }}%</div>
+    <div class="percentage-bar" id="surprise">Surprise: {{ surprise }}%</div>
+    <p id="audio-file-label">Audio File: {{ filename }}</p>
     <a href="/">Try Another</a>
 </body>
 </html>

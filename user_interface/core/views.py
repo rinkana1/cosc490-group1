@@ -17,9 +17,15 @@ def upload_audio(request):
         emotion, scores = wa.detect_emotion(transcribed_text.strip())
 
         return render(request, 'core/result.html', {
-            'emotion': emotion,
+            'emotion': emotion.upper(),
             'transcribed_text': transcribed_text,
             'scores': dict(zip(wa.emotion_labels, scores)),
+            'sadness': round(scores[0] * 100, 2) if scores[0] > 0.01 else 1,
+            'joy': round(scores[1] * 100, 2) if scores[1] > 0.01 else 1,
+            'love': round(scores[2] * 100, 2) if scores[2] > 0.01 else 1,
+            'anger': round(scores[3] * 100, 2) if scores[3] > 0.01 else 1,
+            'fear': round(scores[4] * 100, 2) if scores[4] > 0.01 else 1,
+            'surprise': round(scores[5]  * 100, 2) if scores[5] > 0.01 else 1,
             'filename': filename,
             'fileurl': uploaded_file_url
         })
