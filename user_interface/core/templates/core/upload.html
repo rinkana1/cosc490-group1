@@ -21,7 +21,6 @@
         }
 
         button.upload-submit, .file-upload::file-selector-button {
-            align-self: center;
             width: 30vw;
             height: 12vw;
             border-color: #FFF;
@@ -30,6 +29,24 @@
             background-color: #7253AB;
             color: #FFF;
             margin: auto;
+        }
+
+        .file-upload {
+            position: absolute;
+            top: 40vh;
+            height: 20vh;
+        }
+
+        .file-upload::content {
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+        }
+
+        button.upload-submit {
+            position: absolute;
+            bottom: 10vh;
+            left: 35vw;
         }
     </style>
 </head>

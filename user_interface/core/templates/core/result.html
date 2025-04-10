@@ -4,25 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sadness: {{ sadness }}vw;
-            --joy: {{ joy }}vw;
-            --love: {{ love }}vw;
-            --anger: {{ anger }}vw;
-            --fear: {{ fear }}vw;
-            --surprise: {{ surprise }}vw;
+            --sadness: {{ sadness }}%;
+            --joy: {{ joy }}%;
+            --love: {{ love }}%;
+            --anger: {{ anger }}%;
+            --fear: {{ fear }}%;
+            --surprise: {{ surprise }}%;
         }
 
         body {
             background-color: #1E1E1E;
             color: #FFF;
             font-family: 'Open Sans', 'Arial', sans-serif;
-            margin: 10vw;
+            margin: 5vw;
         }
 
         h1 {
             text-align: center;
+        }
+        
+        div.score-percentages {
+            position: relative;
+            top: 5vh;
+            width: 90vw;
         }
         
         .percentage-bar {
@@ -32,55 +41,137 @@
             width: 0vw;
         }
 
-        #sadness {
-            top: 35vh;
-            background-color: blue;
+        .percentage-label {
+            position: absolute;
+        }
+
+        .percentage-label#sadness {
+            top: 0;
+        }
+        
+        .percentage-bar#sadness {
+            top: 3vh;
+            background-color: rgb(101, 101, 255);
             width: var(--sadness);
         }
 
-        #joy {
-            top: 43vh;
-            background-color: yellow;
+        .percentage-label#joy {
+            top: 10vh;
+        }
+
+        .percentage-bar#joy {
+            top: 13vh;
+            background-color: rgb(237, 237, 101);
             width: var(--joy);
         }
 
-        #love {
-            top: 51vh;
+        .percentage-label#love {
+            top: 20vh;
+        }
+        
+        .percentage-bar#love {
+            top: 23vh;
             background-color: pink;
             width: var(--love);
         }
 
-        #anger {
-            top: 59vh;
-            background-color: red;
+        .percentage-label#anger {
+            top: 30vh;
+        }
+
+        .percentage-bar#anger {
+            top: 33vh;
+            background-color: rgb(227, 98, 98);
             width: var(--anger);
         }
 
-        #fear {
-            top: 67vh;
-            background-color: purple;
+        .percentage-label#fear {
+            top: 40vh;
+        }
+
+        .percentage-bar#fear {
+            top: 43vh;
+            background-color: rgb(141, 71, 141);
             width: var(--fear);
         }
 
-        #surprise {
-            top: 75vh;
-            background-color: green;
-            width: var(--surprise);
+        .percentage-label#surprise {
+            top: 50vh;
         }
 
+        .percentage-bar#surprise {
+            top: 53vh;
+            background-color: rgb(63, 129, 63);
+            width: var(--surprise);
+        }
     </style>
 </head>
 <body>
-    <h1>Emotion Detected: {{ emotion }}</h1>
-    <label for="p.transcription">Transcribed Text:</label>
-    <p id="transcription">{{ transcribed_text }}</p>
-    <div class="percentage-bar" id="sadness">Sadness: {{ sadness }}%</div>
-    <div class="percentage-bar" id="joy">Joy: {{ joy }}%</div>
-    <div class="percentage-bar" id="love">Love: {{ love }}%</div>
-    <div class="percentage-bar" id="anger">Anger: {{ anger }}%</div>
-    <div class="percentage-bar" id="fear">Fear: {{ fear }}%</div>
-    <div class="percentage-bar" id="surprise">Surprise: {{ surprise }}%</div>
-    <p id="audio-file-label">Audio File: {{ filename }}</p>
-    <a href="/">Try Another</a>
+    {% if transcribed_text == "" %}
+        <h1>Emotion Deteced: UNKNOWN</h1>
+        <div class="transcription-div">
+            <label for="p.transcription">Transcribed Text:</label>
+            <p id="transcription">Could not transcribe text. please try another file...</p>
+        </div>
+        <p id="audio-file-label">Audio File: {{ filename }}</p>
+        <a href="/">Try Another</a>
+    {% else %}
+        <h1>Emotion Detected: {{ emotion }}</h1>
+        <div class="transcription-div">
+            <label for="p.transcription">Transcribed Text:</label>
+            <p id="transcription">{{ transcribed_text }}</p>
+        </div>
+        <p id="audio-file-label">Audio File: {{ filename }}</p>
+        <a href="/">Try Another</a>
+        <div class="score-percentages">
+            {% if sadness == 1 %}
+                <label class="percentage-label" id="sadness" for="div.percentage-bar#sadness">Sadness: &lt;1%</label>
+                <div class="percentage-bar" id="sadness"></div> 
+            {% else %}
+                <label class="percentage-label" id="sadness" for="div.percentage-bar#sadness">Sadness: {{ sadness }}%</label>
+                <div class="percentage-bar" id="sadness"></div>
+            {% endif %}
+
+            {% if joy == 1 %}
+                <label class="percentage-label" id="joy" for="div.percentage-bar#joy">Joy: &lt;1%</label>
+                <div class="percentage-bar" id="joy"></div>
+            {% else %}
+                <label class="percentage-label" id="joy" for="div.percentage-bar#joy">Joy: {{ joy }}%</label>    
+                <div class="percentage-bar" id="joy"></div>
+            {% endif %}
+
+            {% if love == 1 %}
+                <label class="percentage-label" id="love" for="div.percentage-bar#love">Love: &lt;1%</label>
+                <div class="percentage-bar" id="love"></div>
+            {% else %}
+                <label class="percentage-label" id="love" for="div.percentage-bar#love">Love: {{ love }}%</label>    
+                <div class="percentage-bar" id="love"></div>
+            {% endif %}
+
+            {% if anger == 1 %}
+                <label class="percentage-label" id="anger" for="div.percentage-bar#anger">Anger: &lt;1%</label>
+                <div class="percentage-bar" id="anger"></div>
+            {% else %}
+                <label class="percentage-label" id="anger" for="div.percentage-bar#anger">Anger: {{ anger }}%</label>    
+                <div class="percentage-bar" id="anger"></div>
+            {% endif %}
+
+            {% if fear == 1 %}
+                <label class="percentage-label" id="fear" for="div.percentage-bar#fear">Fear: &lt;1%</label>
+                <div class="percentage-bar" id="fear"></div>
+            {% else %}
+                <label class="percentage-label" id="fear" for="div.percentage-bar#fear">Fear: {{ fear }}%</label>    
+                <div class="percentage-bar" id="fear"></div>
+            {% endif %}
+
+            {% if surprise == 1 %}
+                <label class="percentage-label" id="surprise" for="div.percentage-bar#surprise">Surprise: &lt;1%</label>
+                <div class="percentage-bar" id="surprise"></div>
+            {% else %}
+                <label class="percentage-label" id="surprise" for="div.percentage-bar#surprise">Surprise: {{ surprise }}%</label>    
+                <div class="percentage-bar" id="surprise"></div>
+            {% endif %}
+        </div>
+    {% endif %}
 </body>
 </html>
