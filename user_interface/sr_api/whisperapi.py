@@ -1,25 +1,29 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+import subprocess
 import torch
 import whisper
 
-def speech_to_text_whisper(audio_file):
-    model = whisper.load_model("base")  # Use "small", "medium", or "large" for better accuracy
-    result = model.transcribe(audio_file)
-    return result["text"]
+# Define emotion labels
+emotion_labels = ["sadness", "joy", "love", "anger", "fear", "surprise"]
 
-# Example usage
-# audio_path = "dia1_utt0.wav"  # Replace with your actual file
-# transcribed_text = speech_to_text_whisper(audio_path)
-# print("Transcribed Text:", transcribed_text)
-
+# Load Whisper model
+whisper_model = whisper.load_model("base")
 
 # Load the emotion detection model
 model_name = "bhadresh-savani/bert-base-uncased-emotion"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
-# Define emotion labels
-emotion_labels = ["sadness", "joy", "love", "anger", "fear", "surprise"]
+def speech_to_text_whisper(audio_file):
+    result = whisper_model.transcribe(audio_file)
+    return result["text"]
+    
+def convert_to_wav(source_path):
+    target_path = source_path.replace('.webm', '.wav')
+    subprocess.run([
+        'ffmpeg', '-y', '-i', source_path, '-ar', '16000', '-ac', '1', target_path
+    ])
+    return target_path
 
 def detect_emotion(text):
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
@@ -30,11 +34,3 @@ def detect_emotion(text):
     # Get the highest emotion score
     top_emotion = emotion_labels[torch.argmax(probabilities)]
     return top_emotion, probabilities.numpy().tolist()[0]
-
-# Run emotion detection on the transcribed text
-# if transcribed_text.strip():
-#     emotion, scores = detect_emotion(transcribed_text)
-#     print(f"Detected Emotion: {emotion}")
-#     print(f"Emotion Scores: {dict(zip(emotion_labels, scores))}")
-# else:
-#     print("Could not analyze emotion due to transcription error.")

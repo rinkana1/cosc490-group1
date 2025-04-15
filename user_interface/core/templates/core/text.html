@@ -43,7 +43,7 @@
             text-align: center;
         }
 
-        button.upload-submit {
+        button.text-submit {
             position: absolute;
             bottom: 10vh;
             left: 35vw;
@@ -52,11 +52,11 @@
 </head>
 <body>
     <a href="/">&lt;--</a>
-    <h1>Upload Audio</h1>
+    <h1>Write Text</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input class="file-upload" type="file" name="audio" accept="audio/*">
-        <button class="upload-submit" type="submit">Submit</button>
+        <input class="text-box" type="text" name="text-box">
+        <button class="text-submit" type="submit">Submit</button>
     </form>
 </body>
 </html>

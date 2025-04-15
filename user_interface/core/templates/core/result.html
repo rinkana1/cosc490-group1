@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result</title>
+    <title>Neurovoice | Result</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -107,14 +107,15 @@
     </style>
 </head>
 <body>
+    <a href="/">&lt;--</a>
     {% if transcribed_text == "" %}
-        <h1>Emotion Deteced: UNKNOWN</h1>
+        <h1>Emotion Detected: UNKNOWN</h1>
         <div class="transcription-div">
             <label for="p.transcription">Transcribed Text:</label>
             <p id="transcription">Could not transcribe text. please try another file...</p>
         </div>
         <p id="audio-file-label">Audio File: {{ filename }}</p>
-        <a href="/">Try Another</a>
+        <a href="/upload">Try Another</a>
     {% else %}
         <h1>Emotion Detected: {{ emotion }}</h1>
         <div class="transcription-div">

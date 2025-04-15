@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroVoice | Record Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1E1E1E;
+            margin: 2rem;
+            color: #FFF;
+            font-family: 'Open Sans', 'Arial', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            align-self: center;
+        }
+
+        div.score-percentages {
+            position: relative;
+            top: 5vh;
+            width: 90vw;
+        }
+        
+        .percentage-bar {
+            position: absolute;
+            display: block;
+            height: 8vw;
+            width: 0vw;
+            transition: 0.5s;
+        }
+
+        .percentage-label {
+            position: absolute;
+        }
+
+        #sadness-label {
+            top: 0;
+        }
+        
+        #sadness {
+            top: 3vh;
+            background-color: rgb(101, 101, 255);
+            width: 1%;
+        }
+
+        #joy-label {
+            top: 10vh;
+        }
+
+        #joy {
+            top: 13vh;
+            background-color: rgb(237, 237, 101);
+            width: 1%;
+        }
+
+        #love-label {
+            top: 20vh;
+        }
+        
+        #love {
+            top: 23vh;
+            background-color: pink;
+            width: 1%;
+        }
+
+        #anger-label {
+            top: 30vh;
+        }
+
+        #anger {
+            top: 33vh;
+            background-color: rgb(227, 98, 98);
+            width: 1%;
+        }
+
+        #fear-label {
+            top: 40vh;
+        }
+
+        #fear {
+            top: 43vh;
+            background-color: rgb(141, 71, 141);
+            width: 1%;
+        }
+
+        #surprise-label {
+            top: 50vh;
+        }
+
+        #surprise {
+            top: 53vh;
+            background-color: rgb(63, 129, 63);
+            width: 1%;
+        }
+    </style>
+</head>
+<body>
+  <a href="/">&lt;--</a> 
+  <h1>Real Time</h1>
+    <button id="start">Start Recording</button>
+    <button id="stop" disabled>Stop Recording</button>
+    <p><strong>Emotion:</strong> <span id="emotion">---</span></p>
+    <p><strong>Transcription:</strong> <span id="transcript">---</span></p>
+
+    <div class="score-percentages">
+        <label class="percentage-label" id="sadness-label" for="div.percentage-bar#sadness">Sadness: {{ sadness }}%</label>
+        <div class="percentage-bar" id="sadness"></div>
+
+        <label class="percentage-label" id="joy-label" for="div.percentage-bar#joy">Joy: {{ joy }}%</label>    
+        <div class="percentage-bar" id="joy"></div>
+
+        <label class="percentage-label" id="love-label" for="div.percentage-bar#love">Love: {{ love }}%</label>    
+        <div class="percentage-bar" id="love"></div>
+
+        <label class="percentage-label" id="anger-label" for="div.percentage-bar#anger">Anger: {{ anger }}%</label>    
+        <div class="percentage-bar" id="anger"></div>
+
+        <label class="percentage-label" id="fear-label" for="div.percentage-bar#fear">Fear: {{ fear }}%</label>    
+        <div class="percentage-bar" id="fear"></div>
+
+        <label class="percentage-label" id="surprise-label" for="div.percentage-bar#surprise">Surprise: {{ surprise }}%</label>    
+        <div class="percentage-bar" id="surprise"></div>
+    </div>
+
+    <script>
+    let recording = false;
+    let localStream;
+    let segmentCount = 0;
+
+    const startBtn = document.getElementById('start');
+    const stopBtn = document.getElementById('stop');
+    const emotionDisplay = document.getElementById('emotion');
+    const transcriptDisplay = document.getElementById('transcript');
+
+    const sadnessLabel = document.getElementById('sadness-label');
+    const joyLabel = document.getElementById('joy-label');
+    const loveLabel = document.getElementById('love-label');
+    const angerLabel = document.getElementById('anger-label');
+    const fearLabel = document.getElementById('fear-label');
+    const surpriseLabel = document.getElementById('surprise-label');
+
+    const sadnessBar = document.getElementById('sadness');
+    const joyBar = document.getElementById('joy');
+    const loveBar = document.getElementById('love');
+    const angerBar = document.getElementById('anger');
+    const fearBar = document.getElementById('fear');
+    const surpriseBar = document.getElementById('surprise');
+
+    function updatePercentages(result) {
+        if (result.default) {
+            sadnessBar.style.width = `1%`;
+            joyBar.style.width = `1%`;
+            loveBar.style.width = `1%`;
+            angerBar.style.width = `1%`;
+            fearBar.style.width = `1%`;
+            surpriseBar.style.width = `1%`;
+
+            sadnessLabel.textContent = "Sadness: --%";
+            joyLabel.textContent = "Joy: --%";
+            loveLabel.textContent = "Love: --%";
+            angerLabel.textContent = "Anger: --%";
+            fearLabel.textContent = "Fear: --%";
+            surpriseLabel.textContent = "Surprise: --%";
+        } else {
+            sadnessBar.style.width = `${result.sadness}%`;
+            joyBar.style.width = `${result.joy}%`;
+            loveBar.style.width = `${result.love}%`;
+            angerBar.style.width = `${result.anger}%`;
+            fearBar.style.width = `${result.fear}%`;
+            surpriseBar.style.width = `${result.surprise}%`;
+
+            sadnessLabel.textContent = result.sadness === 1 ? "Sadness: <1%" : `Sadness: ${ result.sadness }%`;
+            joyLabel.textContent = result.joy === 1 ? "Joy: <1%" : `Joy: ${ result.joy }%`;
+            loveLabel.textContent = result.love == 1 ? "Love: <1%" : `Love: ${ result.love }%`;
+            angerLabel.textContent = result.anger == 1 ? "Anger: <1%" : `Anger: ${ result.anger }%`;
+            fearLabel.textContent = result.fear == 1 ? "Fear: <1%" : `Fear: ${ result.fear }%`;
+            surpriseLabel.textContent = result.surprise == 1 ? "Surprise: <1%" : `Surprise: ${ result.surprise }%`;
+        }
+        
+    }
+
+    async function sendSegmentForAnalysis(blob) {
+        const formData = new FormData();
+      const filename = `segment_${segmentCount++}.webm`;
+      formData.append('audio', blob, filename);
+
+      try {
+        const response = await fetch('/analyze/', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const result = await response.json();
+        if (result.emotion && result.transcribed_text) {
+          emotionDisplay.textContent = result.emotion;
+          transcriptDisplay.textContent = result.transcribed_text;
+          updatePercentages(result);
+        } else {
+            emotionDisplay.textContent = "---";
+          transcriptDisplay.textContent = "---";
+          updatePercentages({"default": true})
+        }
+      } catch (error) {
+        console.error("Error analyzing segment:", error);
+      }
+    }
+
+    async function recordSegment(stream) {
+        const options = { mimeType: 'audio/webm;codecs=opus' };
+        const recorder = new MediaRecorder(stream, options);
+        const chunks = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data);
+        }
+      };
+
+      recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        if (recording) recordSegment(stream);
+        await sendSegmentForAnalysis(blob);
+      };
+
+      recorder.start();
+      setTimeout(() => {
+        recorder.stop();
+      }, 5000);
+    }
+
+    startBtn.onclick = async () => {
+      recording = true;
+      localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recordSegment(localStream);
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+
+    };
+
+    stopBtn.onclick = () => {
+      recording = false;
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      localStream.getTracks().forEach(t => t.stop());
+    };
+    </script>
+</body>
+</html>
