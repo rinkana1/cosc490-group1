@@ -1,0 +1,2 @@
+cd neurovoice_electron
+npm start
