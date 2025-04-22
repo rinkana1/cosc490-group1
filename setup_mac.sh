@@ -1,5 +1,5 @@
 echo Setting up Python virtual environment...
-python -m venv env
+python3 -m venv env
 source env/Scripts/activate
 
 echo Installing python dependencies...

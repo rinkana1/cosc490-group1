@@ -1,5 +1,5 @@
-openai-whisper>=20240930
+git+https://github.com/openai/whisper.git
 pydub>=0.25.1
 transformers>=4.51.1
 ffmpeg-python>=0.2.0
-django>=4.2.20
+django>=4.0
