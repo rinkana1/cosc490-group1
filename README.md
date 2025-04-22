@@ -1,4 +1,4 @@
-# COSC490 Group 1 – Real-Time Emotion Detection from Voice for Neurodivergent Support
+# NeuroVoice – Real-Time Emotion Detection from Voice for Neurodivergent Support
 
 ## Abstract
 Communication is a key part of human interaction. However, individuals with neurological conditions such as Autism Spectrum Disorder (ASD) and Attention Deficit Hyperactivity Disorder (ADHD) may struggle to identify emotions and tones in spoken language, leading to misunderstanding and communication barriers.
