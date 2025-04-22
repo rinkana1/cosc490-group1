@@ -8,6 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sadness: {{ sadness }}%;
+            --joy: {{ joy }}%;
+            --love: {{ love }}%;
+            --anger: {{ anger }}%;
+            --fear: {{ fear }}%;
+            --surprise: {{ surprise }}%;
+        }
+        
         body {
             background-color: #1E1E1E;
             margin: 2rem;
@@ -44,9 +53,89 @@
         }
 
         button.text-submit {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        div.score-percentages {
+            position: relative;
+            top: 5vh;
+            width: 90vw;
+        }
+        
+        .percentage-bar {
             position: absolute;
-            bottom: 10vh;
-            left: 35vw;
+            display: block;
+            height: 8vw;
+            width: 0vw;
+        }
+
+        .percentage-label {
+            position: absolute;
+        }
+
+        .percentage-label#sadness {
+            top: 0;
+        }
+        
+        .percentage-bar#sadness {
+            top: 3vh;
+            background-color: rgb(101, 101, 255);
+            width: var(--sadness);
+        }
+
+        .percentage-label#joy {
+            top: 10vh;
+        }
+
+        .percentage-bar#joy {
+            top: 13vh;
+            background-color: rgb(237, 237, 101);
+            width: var(--joy);
+        }
+
+        .percentage-label#love {
+            top: 20vh;
+        }
+        
+        .percentage-bar#love {
+            top: 23vh;
+            background-color: pink;
+            width: var(--love);
+        }
+
+        .percentage-label#anger {
+            top: 30vh;
+        }
+
+        .percentage-bar#anger {
+            top: 33vh;
+            background-color: rgb(227, 98, 98);
+            width: var(--anger);
+        }
+
+        .percentage-label#fear {
+            top: 40vh;
+        }
+
+        .percentage-bar#fear {
+            top: 43vh;
+            background-color: rgb(141, 71, 141);
+            width: var(--fear);
+        }
+
+        .percentage-label#surprise {
+            top: 50vh;
+        }
+
+        .percentage-bar#surprise {
+            top: 53vh;
+            background-color: rgb(63, 129, 63);
+            width: var(--surprise);
+        }
+
+        a {
+            color: #fff;
         }
     </style>
 </head>
@@ -55,8 +144,73 @@
     <h1>Write Text</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input class="text-box" type="text" name="text-box">
+        <textarea name="text" rows="6" cols="35" placeholder="Enter your message...">{{ text|default:'' }}</textarea>
         <button class="text-submit" type="submit">Submit</button>
     </form>
+
+    {% if submitted %}
+        {% if text == "" %}
+            <h1>Emotion Detected: UNKNOWN</h1>
+            <div class="transcription-div">
+                <label for="p.transcription">Text:</label>
+                <p id="transcription">Could not detect emotion. Please try again...</p>
+            </div>
+        {% else %}
+            <h1>Emotion Detected: {{ emotion }}</h1>
+            <div class="transcription-div">
+                <label for="p.transcription">Text:</label>
+                <p id="transcription">{{ text }}</p>
+            </div>
+            <div class="score-percentages">
+                {% if sadness == 1 %}
+                    <label class="percentage-label" id="sadness" for="div.percentage-bar#sadness">Sadness: &lt;1%</label>
+                    <div class="percentage-bar" id="sadness"></div> 
+                {% else %}
+                    <label class="percentage-label" id="sadness" for="div.percentage-bar#sadness">Sadness: {{ sadness }}%</label>
+                    <div class="percentage-bar" id="sadness"></div>
+                {% endif %}
+
+                {% if joy == 1 %}
+                    <label class="percentage-label" id="joy" for="div.percentage-bar#joy">Joy: &lt;1%</label>
+                    <div class="percentage-bar" id="joy"></div>
+                {% else %}
+                    <label class="percentage-label" id="joy" for="div.percentage-bar#joy">Joy: {{ joy }}%</label>    
+                    <div class="percentage-bar" id="joy"></div>
+                {% endif %}
+
+                {% if love == 1 %}
+                    <label class="percentage-label" id="love" for="div.percentage-bar#love">Love: &lt;1%</label>
+                    <div class="percentage-bar" id="love"></div>
+                {% else %}
+                    <label class="percentage-label" id="love" for="div.percentage-bar#love">Love: {{ love }}%</label>    
+                    <div class="percentage-bar" id="love"></div>
+                {% endif %}
+
+                {% if anger == 1 %}
+                    <label class="percentage-label" id="anger" for="div.percentage-bar#anger">Anger: &lt;1%</label>
+                    <div class="percentage-bar" id="anger"></div>
+                {% else %}
+                    <label class="percentage-label" id="anger" for="div.percentage-bar#anger">Anger: {{ anger }}%</label>    
+                    <div class="percentage-bar" id="anger"></div>
+                {% endif %}
+
+                {% if fear == 1 %}
+                    <label class="percentage-label" id="fear" for="div.percentage-bar#fear">Fear: &lt;1%</label>
+                    <div class="percentage-bar" id="fear"></div>
+                {% else %}
+                    <label class="percentage-label" id="fear" for="div.percentage-bar#fear">Fear: {{ fear }}%</label>    
+                    <div class="percentage-bar" id="fear"></div>
+                {% endif %}
+
+                {% if surprise == 1 %}
+                    <label class="percentage-label" id="surprise" for="div.percentage-bar#surprise">Surprise: &lt;1%</label>
+                    <div class="percentage-bar" id="surprise"></div>
+                {% else %}
+                    <label class="percentage-label" id="surprise" for="div.percentage-bar#surprise">Surprise: {{ surprise }}%</label>    
+                    <div class="percentage-bar" id="surprise"></div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
 </body>
 </html>

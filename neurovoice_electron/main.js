@@ -4,6 +4,21 @@ const path = require('path');
 
 let djangoProcess;
 
+function waitForServer(retries = 10) {
+    const http = require('http');
+    return new Promise((resolve, reject) => {
+        const tryConnect = () => {
+            http.get('http://127.0.0.1:8000', () => resolve())
+                .on('error', () => {
+                    if(retries === 0) return reject('Server not responding');
+                    console.log('Waiting for Django to be ready...');
+                    setTimeout(() => tryConnect(--retries), 2000);
+                });
+        };
+        tryConnect();
+    }); 
+}
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 400,
@@ -36,9 +51,9 @@ function startDjangoServer() {
     });
 }
 
-app.whenReady().then(async () => {
-    await startDjangoServer();
-    setTimeout(createWindow, 3000);
+app.whenReady().then(() => {
+    startDjangoServer();
+    waitForServer().then(createWindow).catch(console.error);
 });
 
 app.on('window-all-closed', () => {
