@@ -55,7 +55,7 @@ v22.14.0
 ```
 
 
-#### 2. **Install Dependencies**
+#### 3. **Install Dependencies**
 Run the setup file for your system:  
 `setup.bat` for Windows  
 `setup_mac.sh` for MacOS  

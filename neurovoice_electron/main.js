@@ -12,7 +12,7 @@ function waitForServer(retries = 10) {
                 .on('error', () => {
                     if(retries === 0) return reject('Server not responding');
                     console.log('Waiting for Django to be ready...');
-                    setTimeout(() => tryConnect(--retries), 2000);
+                    setTimeout(() => tryConnect(--retries), 5000);
                 });
         };
         tryConnect();
