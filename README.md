@@ -104,7 +104,7 @@ $ sudo apt install ffmpeg
 ```
 
 ## Usage Instructions
-1. Launch the UI using start.bat or start.sh:
+1. Launch the UI using `start.bat` or `start.sh`:
 	- Electron serves the frontend application.
 	- Django runs the backend inference service.
 2. Record, upload an audio file, or enter text to detect the emotion.
